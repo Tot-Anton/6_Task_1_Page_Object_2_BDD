@@ -62,8 +62,6 @@ public class MoneyTransferTest {
 
     }
 
-
-
     @Test
     //Перевод суммы больше лимита
     void transferringAnAmountOverTheLimit() {
@@ -74,15 +72,10 @@ public class MoneyTransferTest {
         var dashboardPage = verificationPage.validVerify(verifyInfo);
         var firstCardInfo = DataHelper.getFirstCardInfo();
         var secondCardInfo = DataHelper.getSecondCardInfo();
-        int amount = 15000;
-        var expectedBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo) - amount;
-        var expectedBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo) + amount;
+        int amount = 50000;
         var transferPage = dashboardPage.selectCardToTransfer(secondCardInfo);
-        dashboardPage = transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
-        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
-        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
-        assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
-        assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
+        transferPage.makeTransfer(String.valueOf(amount), firstCardInfo);
+        transferPage.anErrorMessageShouldAppear();
     }
 
     @Test
@@ -105,6 +98,8 @@ public class MoneyTransferTest {
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
         assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
     }
+
+
 
 
 }
