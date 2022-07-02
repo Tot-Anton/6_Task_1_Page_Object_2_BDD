@@ -14,9 +14,15 @@ public class TransferPage {
     private SelenideElement amountInput = $("[data-test-id='amount'] input");
     private SelenideElement fromInput = $("[data-test-id='from'] input");
     private SelenideElement transferHead = $(byText("Пополнение карты"));
+    private SelenideElement errorMessage = $(byText("На вашем счете недостаточно средств"));
 
     public TransferPage() {
         transferHead.shouldBe(visible);
+    }
+
+    //должно появиться сообщение ошибки
+    public void anErrorMessageShouldAppear() {
+        errorMessage.shouldBe(visible);
     }
 
     //Делаем перевод

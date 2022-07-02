@@ -41,6 +41,30 @@ public class MoneyTransferTest {
     }
 
     @Test
+        //Перевод со 2ой карты на 1ю
+    void transferBetweenCards2() {
+        var loginPage = new LoginPage();
+        var authInfo = DataHelper.getAuthInfo();
+        var verificationPage = loginPage.validLogin(authInfo);
+        var verifyInfo = DataHelper.getVerificationCodeFor(authInfo);
+        var dashboardPage = verificationPage.validVerify(verifyInfo);
+        var firstCardInfo = DataHelper.getFirstCardInfo();
+        var secondCardInfo = DataHelper.getSecondCardInfo();
+        int amount = 5000;
+        var expectedBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo) + amount;
+        var expectedBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo) - amount;
+        var transferPage = dashboardPage.selectCardToTransfer(firstCardInfo);
+        dashboardPage = transferPage.makeTransfer(String.valueOf(amount), secondCardInfo);
+        var actualBalanceFirstCard = dashboardPage.getCardBalance(firstCardInfo);
+        var actualBalanceSecondCard = dashboardPage.getCardBalance(secondCardInfo);
+        assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
+
+    }
+
+
+
+    @Test
     //Перевод суммы больше лимита
     void transferringAnAmountOverTheLimit() {
         var loginPage = new LoginPage();
